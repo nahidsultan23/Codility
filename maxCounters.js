@@ -1,33 +1,70 @@
-// Codility score 77%; Correctness: 100%, Performance: 60%
+// Codility score 100%
 
-let N = 5;
 let A = [3, 4, 4, 6, 1, 4, 4];
+let N = 5;
 
 function solution(N, A) {
-    let counter = Array(N).fill(0);
-    
+    let B = [];
+    let C = [];
+    let initNumber = 0;
+    let arrayLength = A.length;
     let maxNumber = 0;
+    let result = [];
+    let j = 0;
 
-    for(i=0; i<A.length; i++) {
-        let number = A[i];
+    B.push([]);
+    C.push([]);
 
-        if((number >= 1) && (number <= N)) {
-            //increase 1
+    for (let i = 0; i < arrayLength; i++) {
+        let element = A[i];
 
-            counter[number - 1]++;
+        if (element > N) {
+            j++;
 
-            if(counter[number - 1] > maxNumber) {
-                maxNumber = counter[number - 1];
+            B.push([]);
+            C.push([]);
+
+            B[j][0] = maxNumber;
+
+            initNumber = maxNumber;
+        } else {
+            if (B[j][element - 1]) {
+                B[j][element - 1]++;
+            } else {
+                B[j][element - 1] = 1;
             }
-        }
-        else if(number === (N + 1)) {
-            //max counter
 
-            counter = Array(N).fill(maxNumber);
+            if (element < N) {
+                if (B[j][element]) {
+                    B[j][element]--;
+                } else {
+                    B[j][element] = -1;
+                }
+            }
+
+            if (C[j][element - 1]) {
+                C[j][element - 1]++;
+            } else {
+                C[j][element - 1] = 1;
+            }
+
+            if (initNumber + C[j][element - 1] > maxNumber) {
+                maxNumber = initNumber + C[j][element - 1];
+            }
         }
     }
 
-    return counter;
+    let sum = 0;
+
+    for (let i = 0; i < N; i++) {
+        if (B[j][i]) {
+            sum += B[j][i];
+        }
+
+        result.push(sum);
+    }
+
+    return result;
 }
 
 console.log(solution(N, A));

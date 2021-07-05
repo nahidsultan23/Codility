@@ -1,34 +1,34 @@
-// Codility score 77%; Correctness: 100%, Performance: 50%
+// Codility score 100%
 
 A = [9, 3, 9, 3, 9, 7, 9];
 
 function solution(A) {
+    let result = 0;
+    let arrayLength = A.length;
     let B = [];
-    let solution = A[0];
+    let positionList = [];
 
-    if(A.length > 1) {
-        for(i=0; i<A.length; i++) {
-            let theNumber = A[i];
-
-            if(B[theNumber]) {
-                B[theNumber] += 1;
-            }
-            else {
-                B[theNumber] = 1;
-            }
-        }
-
-        for(i=0; i<B.length; i++) {
-            if(B[i]) {
-                if(B[i] % 2) {
-                    solution = i;
-                    break;
-                }
-            }
+    for (let i = 0; i < arrayLength; i++) {
+        if (B[A[i]]) {
+            B[A[i]]++;
+        } else {
+            B[A[i]] = 1;
+            positionList.push(A[i]);
         }
     }
 
-    return solution;
+    arrayLength = positionList.length;
+
+    for (let i = 0; i < arrayLength; i++) {
+        let position = positionList[i];
+
+        if (B[position] % 2) {
+            result = position;
+            break;
+        }
+    }
+
+    return result;
 }
 
 console.log(solution(A));

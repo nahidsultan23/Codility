@@ -1,75 +1,46 @@
-// Codility Score: 87%; Correctness: 100%, Performance: 75%
+// Codility Score: 100%
 
-S = "{[()()]}";
+S = '(()(())())';
 
 function solution(S) {
-    let properlyNested = 0;
+    let stringLength = S.length;
 
-    if(!S.length) {
-        properlyNested = 1;
-    }
-    else if(S.length > 1) {
-        if(!(S.length % 2)) {
-            let counter = [];
-            let notProperlyNested = 0;
+    let A = [];
+    let j = 0;
 
-            for(i=0; i<S.length; i++) {
-                if(S[i] === "(") {
-                    counter.push(1);
-                }
-                else if(S[i] === "{") {
-                    counter.push(2);
-                }
-                else if(S[i] === "[") {
-                    counter.push(3);
-                }
-                else if(S[i] === ")") {
-                    let counterLength = counter.length;
-                    let lastElement = counter[counterLength - 1];
+    let result = 0;
+    let broke = false;
 
-                    if(lastElement === 1) {
-                        counter.pop();
-                    }
-                    else {
-                        notProperlyNested = 1;
+    if (!stringLength) {
+        result = 1;
+    } else if (!(stringLength % 2)) {
+        for (let i = 0; i < stringLength; i++) {
+            let bracket = S[i];
+
+            if (bracket === '(') {
+                A[j] = bracket;
+                j++;
+            } else {
+                if (j > 0) {
+                    if (A[j - 1] === '(') {
+                        j--;
+                    } else {
+                        broke = true;
                         break;
                     }
-                }
-                else if(S[i] === "}") {
-                    let counterLength = counter.length;
-                    let lastElement = counter[counterLength - 1];
-
-                    if(lastElement === 2) {
-                        counter.pop();
-                    }
-                    else {
-                        notProperlyNested = 1;
-                        break;
-                    }
-                }
-                else {
-                    let counterLength = counter.length;
-                    let lastElement = counter[counterLength - 1];
-
-                    if(lastElement === 3) {
-                        counter.pop();
-                    }
-                    else {
-                        notProperlyNested = 1;
-                        break;
-                    }
-                }
-            }
-
-            if(!notProperlyNested) {
-                if(!counter.length) {
-                    properlyNested = 1;
+                } else {
+                    broke = true;
+                    break;
                 }
             }
         }
+
+        if (!(broke || j)) {
+            result = 1;
+        }
     }
 
-    return properlyNested;
+    return result;
 }
 
 console.log(solution(S));

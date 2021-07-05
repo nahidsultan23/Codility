@@ -1,59 +1,82 @@
-// Codility score 62%; Correctness: 100%, Performance: 0%
+// Codility score 100%
 
-let S = "CAGCCTA";
+let S = 'CAGCCTA';
 let P = [2, 5, 0];
 let Q = [4, 5, 6];
 
-convertStringToNumber = (string) => {
-    let value = 0;
-
-    switch(string) {
-        case "A":
-            value = 1;
-            break;
-        case "C":
-            value = 2;
-            break;
-        case "G":
-            value = 3;
-            break;
-        case "T":
-            value = 4;
-            break;
-        default:
-            value = 0;
-    }
-
-    return value;
-}
-
 function solution(S, P, Q) {
-    let numberValueDNA = [];
+    let A = [];
+    let C = [];
+    let G = [];
 
-    for(i=0; i<S.length; i++) {
-        numberValueDNA.push(convertStringToNumber(S[i]));
+    let result = [];
+
+    let length = S.length;
+
+    for (let i = 0; i < length; i++) {
+        if (S[i] === 'A') {
+            A.push(i);
+        } else if (S[i] === 'C') {
+            C.push(i);
+        } else if (S[i] === 'G') {
+            G.push(i);
+        }
     }
 
-    let minimumFactor = [];
+    let arrayLength = P.length;
 
-    for(i=0; i<P.length; i++) {
-        let startPosition = P[i];
-        let endPosition = Q[i];
+    for (let i = 0; i < arrayLength; i++) {
+        let start = P[i];
+        let end = Q[i];
 
-        let minimumValue = 4;
+        let resultFound = false;
 
-        for(j=startPosition; j<=endPosition; j++) {
-            let value = numberValueDNA[j];
+        for (let j = 0; j < A.length; j++) {
+            if (A[j] > end) {
+                break;
+            } else if (A[j] >= start && A[j] <= end) {
+                resultFound = true;
 
-            if(value < minimumValue) {
-                minimumValue = value;
+                result.push(1);
+
+                break;
             }
         }
 
-        minimumFactor.push(minimumValue);
+        if (!resultFound) {
+            for (let j = 0; j < C.length; j++) {
+                if (C[j] > end) {
+                    break;
+                } else if (C[j] >= start && C[j] <= end) {
+                    resultFound = true;
+
+                    result.push(2);
+
+                    break;
+                }
+            }
+        }
+
+        if (!resultFound) {
+            for (let j = 0; j < G.length; j++) {
+                if (G[j] > end) {
+                    break;
+                } else if (G[j] >= start && G[j] <= end) {
+                    resultFound = true;
+
+                    result.push(3);
+
+                    break;
+                }
+            }
+        }
+
+        if (!resultFound) {
+            result.push(4);
+        }
     }
 
-    return minimumFactor;
+    return result;
 }
 
 console.log(solution(S, P, Q));

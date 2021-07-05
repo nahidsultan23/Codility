@@ -1,31 +1,23 @@
-// Codility Score: 100%; Correctness: 100%, Performance: 75%
+// Codility Score: 100%;
 
 A = [23171, 21011, 21123, 21366, 21013, 21367];
 
 function solution(A) {
-    let maxProfit = 0;
     let arrayLength = A.length;
+    let maxProfit = 0;
 
-    let maxElementFromRight = A[arrayLength - 1];
+    let min = A[0];
+    let profit = 0;
 
-    let maxElementArrayFromRight = [];
+    for (let i = 0; i < arrayLength; i++) {
+        profit = A[i] - min;
 
-    for(i=0; i<arrayLength; i++) {
-        if(A[arrayLength - (i + 1)] > maxElementFromRight) {
-            maxElementFromRight = A[arrayLength - (i + 1)];
+        if (profit > maxProfit) {
+            maxProfit = profit;
         }
 
-        maxElementArrayFromRight.push(maxElementFromRight);
-    }
-
-    for(i=0; i<(arrayLength - 1); i++) {
-        let buyRate = A[i];
-        let sellRate = maxElementArrayFromRight[arrayLength - (i + 2)];
-
-        let profit = sellRate - buyRate;
-
-        if(profit > maxProfit) {
-            maxProfit = profit;
+        if (A[i] < min) {
+            min = A[i];
         }
     }
 
